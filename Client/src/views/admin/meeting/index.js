@@ -112,7 +112,6 @@ const Index = () => {
     useEffect(() => {
         fetchData();
     }, [action])
-
     return (
         <div>
             <CommonCheckTable
@@ -158,7 +157,7 @@ const Index = () => {
                 setGetTagValues={setGetTagValuesOutside}
                 setSearchbox={setSearchboxOutside}
             />
-            <AddMeeting setAction={setAction} isOpen={isOpen} onClose={onClose} />
+            <AddMeeting setAction={setAction} isOpen={isOpen} onClose={onClose} fetchData={fetchData} />
 
             {/* Delete model */}
             <CommonDeleteModel isOpen={deleteMany} onClose={() => setDeleteMany(false)} type='Meetings' handleDeleteData={handleDeleteMeeting} ids={selectedValues} />

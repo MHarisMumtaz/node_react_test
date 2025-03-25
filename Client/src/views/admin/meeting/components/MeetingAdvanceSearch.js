@@ -15,7 +15,7 @@ const MeetingAdvanceSearch = (props) => {
     const dispatch = useDispatch();
     const initialValues = {
         agenda: '',
-        createBy: '',
+        createdByName: '',
         startDate: '',
         endDate: '',
         timeStartDate: '',
@@ -23,7 +23,7 @@ const MeetingAdvanceSearch = (props) => {
     }
     const validationSchema = yup.object({
         agenda: yup.string(),
-        createBy: yup.string().email('Invalid email format'),
+        createdByName: yup.string(),
     });
     const formik = useFormik({
         initialValues: initialValues,
@@ -57,8 +57,8 @@ const MeetingAdvanceSearch = (props) => {
                     value: values.agenda
                 },
                 {
-                    name: ["createBy"],
-                    value: values.createBy
+                    name: ["createdByName"],
+                    value: values.createdByName
                 },
                 {
                     name: ["startDate", "endDate"],
@@ -99,7 +99,7 @@ const MeetingAdvanceSearch = (props) => {
                                     onChange={handleChange} onBlur={handleBlur}
                                     value={values?.agenda}
                                     name="agenda"
-                                    placeholder='Enter Lead Name'
+                                    placeholder='Enter Agenda'
                                     fontWeight='500'
                                 />
                                 <Text mb='10px' color={'red'}> {errors.agenda && touched.agenda && errors.agenda}</Text>
@@ -113,12 +113,12 @@ const MeetingAdvanceSearch = (props) => {
                                 <Input
                                     fontSize='sm'
                                     onChange={handleChange} onBlur={handleBlur}
-                                    value={values?.createBy}
-                                    name="createBy"
-                                    placeholder='Enter Lead Email'
+                                    value={values?.createdByName}
+                                    name="createdByName"
+                                    placeholder='Enter Name'
                                     fontWeight='500'
                                 />
-                                <Text mb='10px' color={'red'}> {errors.createBy && touched.createBy && errors.createBy}</Text>
+                                <Text mb='10px' color={'red'}> {errors.createdByName && touched.createdByName && errors.createdByName}</Text>
 
                             </GridItem>
                             <GridItem colSpan={{ base: 12 }}>

@@ -46,7 +46,7 @@ const advanceSearchSlice = createSlice({
                             const timeMomentDate = moment(timeItemDate).format('YYYY-MM-DD');
                             return (
                                 (!action?.payload?.values?.agenda || (item?.agenda && item?.agenda.toLowerCase().includes(action?.payload?.values?.agenda?.toLowerCase()))) &&
-                                (!action?.payload?.values?.createBy || (item?.createBy && item?.createBy.toLowerCase().includes(action?.payload?.values?.createBy?.toLowerCase()))) &&
+                                (!action?.payload?.values?.createdByName || (item?.createdByName && item?.createdByName.toLowerCase().includes(action?.payload?.values?.createdByName?.toLowerCase()))) &&
                                 (!action?.payload?.values?.startDate || (momentDate >= action?.payload?.values?.startDate)) &&
                                 (!action?.payload?.values?.endDate || (momentDate <= action?.payload?.values?.endDate)) &&
                                 (!action?.payload?.values?.timeStartDate || (timeMomentDate >= action?.payload?.values?.timeStartDate)) &&
