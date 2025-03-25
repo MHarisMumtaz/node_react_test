@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getApi } from '../../services/api'
 
-export const fetchPropertyCustomFiled = createAsyncThunk('fetchLeadData', async () => {
+export const fetchPropertyCustomFiled = createAsyncThunk('fetchPropertyCustomFiled', async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     try {
         const response = await getApi(`api/custom-field/?moduleName=Properties`);

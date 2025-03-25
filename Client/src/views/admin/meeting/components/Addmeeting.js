@@ -4,6 +4,7 @@ import MultiContactModel from 'components/commonTableModel/MultiContactModel';
 import MultiLeadModel from 'components/commonTableModel/MultiLeadModel';
 import Spinner from 'components/spinner/Spinner';
 import dayjs from 'dayjs';
+import moment from 'moment';
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { LiaMousePointerSolid } from 'react-icons/lia';
@@ -43,21 +44,59 @@ const AddMeeting = (props) => {
         initialValues: initialValues,
         validationSchema: MeetingSchema,
         onSubmit: (values, { resetForm }) => {
-            
+            AddData();
         },
     });
     const { errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue } = formik
 
     const AddData = async () => {
+        try {
+            setIsLoding(true)
+            values.dateTime =  moment(values?.dateTime).format('YYYY-MM-DD HH:mm');
+            if(values.related === 'Contact' && values.attendesLead?.length)  {
+                values.attendesLead = [];
+            } else if(values.related === 'Lead' && values.attendes?.length)  {
+                values.attendes = [];
+            } 
+            let response = await postApi('api/meeting/add', values)
 
+            if (response.status === 200) {
+                formik.resetForm()
+                onClose();
+                fetchData(1)
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        finally {
+            setIsLoding(false)
+        }
+        
     };
 
-    const fetchAllData = async () => {
-        
-    }
-
     useEffect(() => {
+        if(contactList?.data) {
+            setContactData(contactList.data);
+        }
+        if(leadData?.data) {
+            setLeadData(leadData.data);
+        }
+    }, []);
 
+    useEffect(async () => {
+        try {
+            let result
+            if (values.related === "Contact" && contactdata?.length <= 0) {
+                result = await getApi(user.role === 'superAdmin' ? 'api/contact/' : `api/contact/?createBy=${user._id}`)
+                setContactData(result?.data)
+            } else if (values.related === "Lead" && leaddata.length <= 0) {
+                result = await getApi(user.role === 'superAdmin' ? 'api/lead/' : `api/lead/?createBy=${user._id}`);
+                setLeadData(result?.data)
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
     }, [props.id, values.related])
 
     const extractLabels = (selectedItems) => {
@@ -67,7 +106,7 @@ const AddMeeting = (props) => {
     const countriesWithEmailAsLabel = (values.related === "Contact" ? contactdata : leaddata)?.map((item) => ({
         ...item,
         value: item._id,
-        label: values.related === "Contact" ? `${item.firstName} ${item.lastName}` : item.leadName,
+        label: values.related === "Contact" ? `${item.fullName}` : item.leadName,
     }));
 
     return (
